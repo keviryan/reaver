@@ -49,13 +49,12 @@ def get_basepaths():
         try:
             base_paths = apigw.get_base_path_mappings(domainName=domain_name)
             for base_path in base_paths['items']:
-                print(base_path)
                 if (base_path['basePath'] == '(none)' or ' '):
                     base_path_mappings.append(tuple((' ', base_path['restApiId'])))
                 else:
                     base_path_mappings.append(tuple((base_path['basePath'], base_path['restApiId'])))
         except:
-            logger.warn("couldn't get basepath mappings for ",  exc_info=True)
+            logger.warn("couldn't get basepath mappings",  exc_info=True)
     return(mapped_domains)
 
 def get_log_groups(my_apis, apis_to_delete):
@@ -77,12 +76,11 @@ def get_log_groups(my_apis, apis_to_delete):
                     log_groups.append("API-Gateway-Execution-Logs_{}/{}".format(api_id, stage_name)) 
             except Exception as e:
                 logger.error(e, exc_info=True)
-                pass            
+                pass
     return api_gw_log_groups
 
 
 def delete_apis(my_apis, apis_to_delete, log_groups, base_path_mappings):
-
     for api_name in apis_to_delete:
         if api_name not in my_apis:
             logger.warn("Cannot delete API with name " + api_name + " because it was not found on this account.")
@@ -105,7 +103,7 @@ def delete_apis(my_apis, apis_to_delete, log_groups, base_path_mappings):
                     raise
             except apigw.exceptions.BadRequestException:
                     logger.error("Could not delete the API. Ensure there was no issue deleting the basepath mapping", exc_info=True)
-                    raise      
+                    raise
             except apigw.exceptions.TooManyRequests:
                 logger.error("Throttled after two attempts to delete {}...Sleeping for 10 Seconds and trying again.".format(api_name), exc_info=True)
                 sleep(10)
