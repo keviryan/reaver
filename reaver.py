@@ -49,7 +49,7 @@ def get_basepaths():
         try:
             base_paths = apigw.get_base_path_mappings(domainName=domain_name)
             for base_path in base_paths['items']:
-                if (base_path['basePath'] == '(none)' or ' '):
+                if (base_path['basePath'] == '(none)')  or (base_path['basePath'] == ' '):
                     base_path_mappings.append(tuple((' ', base_path['restApiId'])))
                 else:
                     base_path_mappings.append(tuple((base_path['basePath'], base_path['restApiId'])))
