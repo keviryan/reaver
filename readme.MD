@@ -4,7 +4,7 @@ The [DeleteRestApi](https://docs.aws.amazon.com/apigateway/latest/developerguide
 
 ## Getting Started
 
-Clone this repository to get started. 
+This tool Cleans up the API Gateway Rest APIs on your account. To delete a Rest API you must first ensure that it is not mapped to a custom domain name. This tool checks if a given API is mapped to any custom domain names, and will remove that mapping before deleting the domain name. After removing the API, It will also attempt to clean up any Cloud Watch log groups that may have been created for the API.
 
 ### Prerequisites
 
@@ -41,6 +41,8 @@ The tool takes a file containing the names of APIs you'd like to delete as input
 Run the tool:
 
     python3 reaver.py apis_to_delete
+
+
 
 
 
